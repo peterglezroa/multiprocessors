@@ -2,6 +2,8 @@
 //
 // File: example4.c
 // Author(s):
+//					A01651517 Pedro Luis González Roa
+//					A01703947 Juan Alejandro Alcántara Minaya
 // Description: This file contains the code to count the number of
 //				even numbers within an array. The time this implementation
 //				takes will be used as the basis to calculate the
@@ -17,9 +19,12 @@
 #define SIZE 1000000000
 
 // implement your code
+int is_even(int x) {
+	return !(x % 2);
+}
 
 int main(int argc, char* argv[]) {
-	int i, *a, result;
+	int i, *a, result = 0;
 	double ms;
 
 	a = (int *) malloc(sizeof(int) * SIZE);
@@ -32,6 +37,7 @@ int main(int argc, char* argv[]) {
 		start_timer();
 
 		// call the implemented function
+		result += is_even(i);
 
 		ms += stop_timer();
 	}

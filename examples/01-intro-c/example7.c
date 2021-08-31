@@ -2,6 +2,8 @@
 //
 // File: example7.c
 // Author(s):
+//					A01651517 Pedro Luis González Roa
+//					A01703947 Juan Alejandro Alcántara Minaya
 // Description: This file contains the code to brute-force all
 //				prime numbers less than MAXIMUM. The time this
 //				implementation takes will be used as the basis to
@@ -17,10 +19,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
+#include <math.h>
 
 #define MAXIMUM 1000000 //1e6
 
-// implement your code
+// void is_prime(int* a, int x) {
+// 	for (int i = 2; i < sqrt((double)x); i++) {
+// 		if (x % i == 0) {
+// 			a[x] = 0;
+// 			return;
+// 		}
+// 	}
+// 	a[x] = 1;
+// }
+
+void is_prime(int* a, int x) {
+	if (a[x] != 0) {
+		a[x] = 1;
+		for (int i = 2; i < sqrt((double)x); i++) {
+			if (x % i == 0) {
+				a[x] = 0;
+			}
+		}
+		if (a[x] == 1) {
+			for (int i = 2; x * i < N; i++) {
+				a[x * i] = 0;
+			}
+		}
+	}
+}
 
 int main(int argc, char* argv[]) {
 	int i, *a;
@@ -29,7 +56,8 @@ int main(int argc, char* argv[]) {
 	a = (int *) malloc(sizeof(int) * (MAXIMUM + 1));
 	printf("At first, neither is a prime. We will display to TOP_VALUE:\n");
 	for (i = 2; i < TOP_VALUE; i++) {
-		if (a[i] == 0) {
+		a[i] = -1;
+		if (a[i] == -1) {
 			printf("%i ", i);
 		}
 	}
@@ -41,6 +69,7 @@ int main(int argc, char* argv[]) {
 		start_timer();
 
 		// call the implemented function
+		is_prime(a, i);
 
 		ms += stop_timer();
 	}
