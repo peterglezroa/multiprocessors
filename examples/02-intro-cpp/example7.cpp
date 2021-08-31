@@ -25,7 +25,35 @@
 
 using namespace std;
 
-// implement your class here
+class PrimeCalculator {
+    private:
+        int *array, size, *primes;
+    public:
+        PrimeCalculator(int *array, int size) : array(array), size(size) {
+            primes = new int[size];
+        }
+
+        int * getPrimes() const { return primes; }
+
+        void slowCalculate() {
+            for (int i = 0; i < size; i++) {
+                if(primes[i] != 0) {
+                    primes[i] = 1;
+                    for (int j = 0; j < sqrt((double)array[i]); j++)
+                        if (array[i] % j == 0)
+                            primes[i] = 0;
+
+                    if (primes[i] == 1)
+                        for (int j = 0; array[i]*j < N; j++)
+                            primes[array[i]*j] = 0;
+                }
+            }
+        }
+
+        void calculate() {
+            // To do better
+        }
+};
 
 int main(int argc, char* argv[]) {
 	int i, *a;
