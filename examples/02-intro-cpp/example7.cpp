@@ -1,7 +1,9 @@
 // =================================================================
 //
 // File: example7.cpp
-// Author: Pedro Perez
+// Author(s): 
+//					A01651517 Pedro Luis González Roa
+//					A01703947 Juan Alejandro Alcántara Minaya
 // Description: This file contains the code to brute-force all
 //				prime numbers less than MAXIMUM. The time this
 //				implementation takes will be used as the basis to
@@ -25,28 +27,31 @@
 
 using namespace std;
 
-class PrimeCalculator {
-    private:
-        int *array, size;
-    public:
-        PrimeCalculator(int *array, int size) : array(array), size(size) {}
+// implement your class here
+class PrimeIdentifier {
+	private:
+		int x;
+		int *a;
 
-        int * getPrimes() const { return array; }
+	public:
+		PrimeIdentifier (int x, int *a) : x(x), a(a) {}
 
-        void calculate() {
-            for (int x = 2; x < size; x++) {
-                if (array[x] != 0) {
-                    array[x] = 1;
-                    for (int j = 0; j < sqrt((double)x); j++)
-                        if (x % j == 0)
-                            array[x] = 0;
-
-                    if (array[x] == 1)
-                        for (int j = 0; x*j < N; j++)
-                            array[x*j] = 0;
-                }
-            }
-        }
+		void is_prime() {
+			if (a[x] != 0) {
+				a[x] = 1;
+				for (int i = 2; i < sqrt((double)x); i++) {
+					if (x % i == 0) {
+						a[x] = 0;
+					}
+				}
+				if (a[x] == 1) {
+					for (int i = 2; x * i < N; i++) {
+						a[x * i] = 0;
+					}
+				}
+			}
+		}
+	
 };
 
 int main(int argc, char* argv[]) {
@@ -55,25 +60,24 @@ int main(int argc, char* argv[]) {
 
 	a = new int[MAXIMUM + 1];
 	cout << "At first, neither is a prime. We will display to TOP_VALUE:\n";
-    cout << MAXIMUM << TOP_VALUE;
 	for (i = 2; i < TOP_VALUE; i++) {
-        a[i] = -1;
+		a[i] = -1;
 		cout << i << " ";
 	}
 	cout << "\n";
 
 	cout << "Starting..." << endl;
 	ms = 0;
-    cout << "debug 1";
-    cout << "debug 2";
-
 	// create object here
-    PrimeCalculator calc = PrimeCalculator(a, MAXIMUM+1);
+	for (int i = 0; i < N; i++) {
+		start_timer();
+		// call your method here.
+		PrimeIdentifier *identifier = new PrimeIdentifier(i, a);
+		identifier->is_prime();
+		delete identifier;
 
-    start_timer();
-    calc.calculate();
-    ms += stop_timer();
-
+		ms += stop_timer();
+	}
 	cout << "Expanding the numbers that are prime to TOP_VALUE:\n";
 	for (i = 2; i < TOP_VALUE; i++) {
 		if (a[i] == 1) {
