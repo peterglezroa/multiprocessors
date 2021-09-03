@@ -27,31 +27,25 @@ using namespace std;
 
 class PrimeCalculator {
     private:
-        int *array, size, *primes;
+        int *array, size;
     public:
-        PrimeCalculator(int *array, int size) : array(array), size(size) {
-            primes = new int[size];
-        }
+        PrimeCalculator(int *array, int size) : array(array), size(size) {}
 
-        int * getPrimes() const { return primes; }
-
-        void slowCalculate() {
-            for (int i = 0; i < size; i++) {
-                if(primes[i] != 0) {
-                    primes[i] = 1;
-                    for (int j = 0; j < sqrt((double)array[i]); j++)
-                        if (array[i] % j == 0)
-                            primes[i] = 0;
-
-                    if (primes[i] == 1)
-                        for (int j = 0; array[i]*j < N; j++)
-                            primes[array[i]*j] = 0;
-                }
-            }
-        }
+        int * getPrimes() const { return array; }
 
         void calculate() {
-            // To do better
+            for (int x = 2; x < size; x++) {
+                if (array[x] != 0) {
+                    array[x] = 1;
+                    for (int j = 0; j < sqrt((double)x); j++)
+                        if (x % j == 0)
+                            array[x] = 0;
+
+                    if (array[x] == 1)
+                        for (int j = 0; x*j < N; j++)
+                            array[x*j] = 0;
+                }
+            }
         }
 };
 
@@ -61,21 +55,25 @@ int main(int argc, char* argv[]) {
 
 	a = new int[MAXIMUM + 1];
 	cout << "At first, neither is a prime. We will display to TOP_VALUE:\n";
+    cout << MAXIMUM << TOP_VALUE;
 	for (i = 2; i < TOP_VALUE; i++) {
+        a[i] = -1;
 		cout << i << " ";
 	}
 	cout << "\n";
 
 	cout << "Starting..." << endl;
 	ms = 0;
+    cout << "debug 1";
+    cout << "debug 2";
+
 	// create object here
-	for (int i = 0; i < N; i++) {
-		start_timer();
+    PrimeCalculator calc = PrimeCalculator(a, MAXIMUM+1);
 
-		// call your method here.
+    start_timer();
+    calc.calculate();
+    ms += stop_timer();
 
-		ms += stop_timer();
-	}
 	cout << "Expanding the numbers that are prime to TOP_VALUE:\n";
 	for (i = 2; i < TOP_VALUE; i++) {
 		if (a[i] == 1) {
