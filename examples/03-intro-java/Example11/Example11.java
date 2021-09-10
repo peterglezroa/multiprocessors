@@ -2,6 +2,9 @@
 //
 // File: Example11.java
 // Author(s):
+//					 A01651517 Pedro Luis Gonzalez Roa 
+//					 A01703947 Juan Alejandro Alcantara Minaya
+//
 // Description: This file implements the code that transforms a
 //				grayscale image. The time this implementation takes will
 //				be used as the basis to calculate the improvement obtained
@@ -27,10 +30,22 @@ public class Example11 {
 		this.height = height;
 	}
 
-	// palce your code here
+	// place your code here
 
 	void doTask() {
 		// place your code here.
+		for (int i = 0; i < src.length; i++) {
+			int red = (src[i] & 0x00FF0000) >> 16; // AND mask & 2 byte shift
+			int green = (src[i] & 0x0000FF00) >> 8; // AND mask & 1 byte shift
+			int blue = (src[i] & 0x000000FF); // AND mask
+			int avg = (red + green + blue)/3;
+			dest[i] =
+				0xFF000000 // ALPHA CHANNEL
+				| (avg << 16) // RED CHANNEL
+				| (avg << 8) // GREEN CHANNEL
+				| avg // BLUE CHANNEL
+				;
+		}
 	}
 
 	public static void main(String args[]) throws Exception {
