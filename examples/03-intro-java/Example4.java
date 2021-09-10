@@ -1,7 +1,7 @@
 // =================================================================
 //
 // File: Example4.java
-// Authors: 
+// Authors: Peter Glez A01651517, Juan Alcantara A01703947
 // Description: This file contains the code to count the number of
 //				even numbers within an array. The time this implementation
 //				takes will be used as the basis to calculate the
@@ -29,7 +29,9 @@ public class Example4 {
 
 	public void calculate() {
 		result = 0;
-		// place your code here
+        for (int n:array)
+            if ( n%2 == 0 )
+                result++;
 	}
 
 	public static void main(String args[]) {

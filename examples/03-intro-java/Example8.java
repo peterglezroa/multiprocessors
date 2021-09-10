@@ -1,7 +1,7 @@
 // =================================================================
 //
 // File: Example8.java
-// Author: Pedro Perez
+// Author: Pedro González A01651517, Juan Alcantara A01703947
 // Description: This file implements the enumeration sort algorithm.
 // 				The time this implementation takes will be used as the
 //				basis to calculate the improvement obtained with
@@ -24,7 +24,16 @@ public class Example8 {
 	}
 
 	public void doTask() {
-		// place your code here
+        int n = 0;
+        int[] res = new int[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            n = 0;
+            for (int j = 0; j < SIZE; j++)
+                if (array[i] > array[j] || array[i] == array[j] && i > j)
+                    n++;
+            res[n] = array[i];
+        }
+        array = res;
 	}
 
 	public int[] getSortedArray() {
@@ -40,12 +49,14 @@ public class Example8 {
 		Utils.randomArray(array);
 		Utils.displayArray("before", array);
 
+        obj = new Example8(array);
 		System.out.printf("Starting...\n");
 		ms = 0;
-		for (int i = 0; i < Utils.N; i++) {
+		for (int i = 0; i < 2; i++) {
 			startTime = System.currentTimeMillis();
 
 			// pace your code here.
+            obj.doTask();
 
 			stopTime = System.currentTimeMillis();
 

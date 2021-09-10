@@ -26,7 +26,32 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include "utils.h"
 
-// implement your code
+
+class GrayScale {
+    private:
+        cvv::Mat &src, &dest;
+
+        void grayScalePixel(int ren, int col) const {
+            int side_pixels, cells;
+            int tmp_ren, tmp_col;
+            float gray;
+
+            dest.at<uchar>(ren, col) = (
+                (float) src.at<cv::Vec3b>(tmp_ren, tmp_col)[RED];
+                (float) src.at<cv::Vec3b>(tmp_ren, tmp_col)[GREEN];
+                (float) src.at<cv::Vec3b>(tmp_ren, tmp_col)[BLUE];
+            )/3;
+        }
+
+    public:
+        GrayScale(cv::Mat &s, cv::Mat &d) : src(s), dest(d) {}
+
+        void doTask() {
+            for (int i = 0; i< src.rows; i++)
+                for (int j = 0; j < src.cols; j++)
+                    grayScalePixel(i, j);
+        }
+}
 
 int main(int argc, char* argv[]) {
 	int i;
@@ -48,14 +73,14 @@ int main(int argc, char* argv[]) {
 	for (i = 0; i < N; i++) {
 		start_timer();
 
-		// call the implemented function
+        GrayScale obj(src, dest);
+        obj.doTask();
 
 		acum += stop_timer();
 	}
 
 	printf("avg time = %.5lf ms\n", (acum / N));
 
-	/*
 	cv::namedWindow("Original", cv::WINDOW_AUTOSIZE);
 	cv::imshow("Original", src);
 
@@ -63,7 +88,6 @@ int main(int argc, char* argv[]) {
 	cv::imshow("Gray scale", dest);
 
 	cv::waitKey(0);
-	*/
 
 	cv::imwrite("gray_scale.png", dest);
 
