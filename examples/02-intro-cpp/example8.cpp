@@ -1,7 +1,7 @@
 // =================================================================
 //
 // File: example5.cpp
-// Author: Pedro Perez
+// Author: Pedro González A01651517, Juan Alcantara A01703947
 // Description: This file contains the code that implements the
 //				enumeration sort algorithm. The time this implementation
 //				takes ill be used as the basis to calculate the
