@@ -2,6 +2,9 @@
 //
 // File: Example7.java
 // Author(s):
+//					 A01651517 Pedro Luis Gonzalez Roa 
+//					 A01703947 Juan Alejandro Alcantara Minaya
+//
 // Description: This file contains the code to brute-force all
 //				prime numbers less than MAXIMUM. The time this
 //				implementation takes will be used as the basis to
@@ -22,10 +25,16 @@ public class Example7 {
 		this.array = array;
 	}
 
-	// place yout code here
-
 	public void calculate() {
-		// place yout code here
+		for (int i = 2; i < array.length; i++) {
+			array[i] = true;
+			for (int j = 2; j <= Math.sqrt(i); j++) {
+				if (i % j == 0) {
+					array[i] = false;
+					break;
+				}
+			}
+		}
 	}
 
 	public static void main(String args[]) {
@@ -41,12 +50,14 @@ public class Example7 {
 		System.out.println("");
 
 		// Create the object here.
+		Example7 example = new Example7(array);
 		acum = 0;
 		System.out.printf("Starting...\n");
 		for (int i = 0; i < Utils.N; i++) {
 			startTime = System.currentTimeMillis();
 
 			// Call yout method here.
+			example.calculate();
 
 			stopTime = System.currentTimeMillis();
 
