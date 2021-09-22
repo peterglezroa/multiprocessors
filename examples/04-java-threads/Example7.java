@@ -1,7 +1,7 @@
 // =================================================================
 //
 // File: Example7.java
-// Author(s):
+// Author(s): Peter Glez A01651517 && Juan Alcantara A01703947
 // Description: This file contains the code to brute-force all
 //                prime numbers less than MAXIMUM. The time this
 //                implementation takes will be used as the basis to
@@ -17,6 +17,7 @@
 public class Example7 extends Thread {
     private static final int MAXIMUM = 100_000_000;
     private boolean array[];
+    private int start, finish;
     
     public Example7(boolean array[], int start, int finish) {
         this.array = array;
@@ -24,7 +25,7 @@ public class Example7 extends Thread {
         this.finish = finish;
     }
 
-    public int getPrimes() { return primes; }
+    public boolean[] getArray() { return array; }
 
     public void run() {
         for (int i = start; i < finish; i++) {
@@ -39,13 +40,14 @@ public class Example7 extends Thread {
     }
 
     public static void main(String args[]) {
-        int array[] = new boolean[SIZE + 1], blocks;
+        boolean array[] = new boolean[MAXIMUM + 1];
+        int blocks;
         long startTime, stopTime;
         Example7 threads[];
         double acum = 0;
 
         // Calculate how many threads we can use
-        blocks = SIZE / Utils.MAXTHREADS;
+        blocks = MAXIMUM / Utils.MAXTHREADS;
         threads = new Example7[Utils.MAXTHREADS];
 
         acum = 0;
@@ -54,10 +56,12 @@ public class Example7 extends Thread {
 
             // Create threads
             for (int i = 0; i < threads.length; i++) {
-                if (i != threads.length-1) {
+                if (i == 0) {
+                    threads[i] = new Example7(array, 2, ((i+1) * blocks));
+                } else if (i != threads.length-1) {
                     threads[i] = new Example7(array, (i*blocks), ((i+1) * blocks));
                 } else {
-                    threads[i] = new Example7(array, (i*blocks), SIZE);
+                    threads[i] = new Example7(array, (i*blocks), MAXIMUM);
                 }
             }
 
@@ -78,10 +82,13 @@ public class Example7 extends Thread {
 
             // Only get result of last run
             if (j == Utils.N) {
-                for (Example4 thread : threads) { res += thread.result; }
+                for (Example7 thread : threads) {
+                    for (int i = thread.start; i < thread.finish; i++)
+                        if (thread.getArray()[i])
+                            System.out.printf("%d ", i);
+                }
             }
         }
-        System.out.printf("sum = %d\n", res);
-        System.out.printf("avg time = %.5f ms\n", (acum / Utils.N));
+        System.out.printf("\navg time = %.5f ms\n", (acum / Utils.N));
     }
 }

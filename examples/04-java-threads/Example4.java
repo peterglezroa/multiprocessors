@@ -1,7 +1,7 @@
 // =================================================================
 //
 // File: Example4.java
-// Authors:
+// Authors: Peter Glez A01651517 && Juan Alcantara  A01703947
 // Description: This file contains the code to count the number of
 //                even numbers within an array using Threads.
 //
