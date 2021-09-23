@@ -30,9 +30,10 @@ public class Example11 extends Thread {
     public void run() {
         int red, green, blue, avg;
         for (int i = start; i < finish; i++) {
-            red = (src[i] & 0x00FF0000) >> 16;
-            green = (src[i] & 0x0000FF00) >> 8;
-            avg = ((src[i]&0x00FF0000) + (src[i]&0x0000FF00) + (src[i]&0x000000FF))/3;
+            red = (src[i]&0x00FF0000)>>16;
+            green = (src[i]&0x0000FF00)>>8;
+            blue = (src[i]&0x000000FF);
+            avg = (red + green + blue)/3;
             dest[i] = 0xFF000000 | (avg << 16) | (avg << 8) | avg;
         }
     }
@@ -86,7 +87,6 @@ public class Example11 extends Thread {
         final BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         destination.setRGB(0, 0, w, h, dest, 0, w);
 
-        /*
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                ImageFrame.showImage("Original - " + fileName, source);
@@ -98,6 +98,5 @@ public class Example11 extends Thread {
                ImageFrame.showImage("Blur - " + fileName, destination);
             }
         });
-        */
     }
 }
