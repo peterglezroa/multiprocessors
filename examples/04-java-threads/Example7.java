@@ -15,10 +15,10 @@
 // =================================================================
 
 public class Example7 extends Thread {
-    private static final int MAXIMUM = 100_000_000;
+    private static final int MAXIMUM = 1_000_000;
     private boolean array[];
     private int start, finish;
-    
+
     public Example7(boolean array[], int start, int finish) {
         this.array = array;
         this.start = start;
