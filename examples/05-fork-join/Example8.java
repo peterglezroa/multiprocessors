@@ -1,11 +1,13 @@
 // =================================================================
 //
 // File: Example8.java
-// Author(s):
+// Authors:
+//				 A01651517 Peter Glez
+//				 A01703947 Juan Alcántara
 // Description: This file implements the enumeration sort algorithm
 // 				using Java's Fork-Join.
 //
-// Copyright (c) 2020 by Tecnologico de Monterrey.
+// Copyright (c) 2021 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial
 // purpose.
 //
