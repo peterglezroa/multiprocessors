@@ -22,7 +22,6 @@
 
 #define SIZE 10000
 
-// implement your code
 void enum_sort(int* a, int* pos, int* result) {
 	for (int i = 0; i < SIZE; i++) {
 		pos[i] = 0;
