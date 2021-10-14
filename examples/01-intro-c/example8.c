@@ -20,7 +20,7 @@
 #include <string.h>
 #include "utils.h"
 
-#define SIZE 10000
+#define SIZE 100000
 
 void enum_sort(int* a, int* pos, int* result) {
 	for (int i = 0; i < SIZE; i++) {
