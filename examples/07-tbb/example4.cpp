@@ -20,7 +20,7 @@
 #include <tbb/blocked_range.h>
 #include "utils.h"
 
-#define SIZE 10000000 //1e8
+#define SIZE 1000000000 //1e9
 
 using namespace std;
 using namespace tbb;
