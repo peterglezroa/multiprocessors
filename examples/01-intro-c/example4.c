@@ -19,12 +19,11 @@
 #define SIZE 1000000000
 
 // implement your code
-int is_even(int x) {
-	return !(x % 2);
-}
+int is_even(int x) { return !(x % 2); }
 
 int main(int argc, char* argv[]) {
-	int i, *a, result = 0;
+	int i, *a;
+  long result = 0;
 	double ms;
 
 	a = (int *) malloc(sizeof(int) * SIZE);
@@ -35,13 +34,14 @@ int main(int argc, char* argv[]) {
 	ms = 0;
 	for (i = 0; i < N; i++) {
 		start_timer();
+    result = 0;
 
-		// call the implemented function
-		result += is_even(i);
+    for (int j = 0; j < SIZE; j++)
+      result += is_even(a[j]);
 
 		ms += stop_timer();
 	}
-	printf("result = %i\n", result);
+	printf("result = %li\n", result);
 	printf("avg time = %.5lf ms\n", (ms / N));
 	// must display: result = 500000000
 

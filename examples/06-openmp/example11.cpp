@@ -26,7 +26,16 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include "utils.h"
 
-// implement your code
+void gray_scale(cv::Mat src, cv::Mat dest) {
+    #pragma omp parallel
+    for (int i = 0 ; i < src.rows*src.cols ; i++) {
+        dest.at<uchar>(i%src.cols, i/src.cols) = (
+            (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[RED];
+            (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[GREEN];
+            (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[BLUE];
+        )/3;
+    }
+}
 
 int main(int argc, char* argv[]) {
 	int i;
@@ -55,7 +64,6 @@ int main(int argc, char* argv[]) {
 
 	printf("avg time = %.5lf ms\n", (acum / N));
 
-	/*
 	cv::namedWindow("Original", cv::WINDOW_AUTOSIZE);
     cv::imshow("Original", src);
 
@@ -63,7 +71,6 @@ int main(int argc, char* argv[]) {
     cv::imshow("Gray", dest);
 
 	cv::waitKey(0);
-	*/
 	cv::imwrite("gray_scale.png", dest);
 
 	return 0;
