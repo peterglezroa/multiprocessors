@@ -21,7 +21,7 @@
 #include "utils.h"
 #include <math.h>
 
-#define MAXIMUM 1000000 //1e6
+#define MAXIMUM 100000000 //1e6
 
 // void is_prime(int* a, int x) {
 // 	for (int i = 2; i < sqrt((double)x); i++) {
@@ -68,11 +68,12 @@ int main(int argc, char* argv[]) {
 	for (i = 0; i < N; i++) {
 		start_timer();
 
-		// call the implemented function
-		is_prime(a, i);
+    for (int j = 0; j < MAXIMUM; j++)
+      is_prime(a, j);
 
 		ms += stop_timer();
 	}
+
 	printf("Expanding the numbers that are prime to TOP_VALUE:\n");
 	for (i = 2; i < TOP_VALUE; i++) {
 		if (a[i] == 1) {
