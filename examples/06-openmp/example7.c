@@ -18,7 +18,7 @@
 #include <math.h>
 #include "utils.h"
 
-#define MAXIMUM 100000000 //1e6
+#define MAXIMUM 1000000 //1e6
 
 void is_prime(int* a, int x) {
 	if (a[x] != 0) { // Check if it has not been already set as no prime
@@ -53,6 +53,8 @@ int main(int argc, char* argv[]) {
 	printf("Starting...\n");
 	ms = 0;
 	for (i = 0; i < N; i++) {
+		for (int i = 0; i < MAXIMUM; i++)
+			a[i] = -1;
 		start_timer();
 
     int j;

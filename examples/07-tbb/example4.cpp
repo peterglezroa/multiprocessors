@@ -49,7 +49,7 @@ class CountEven {
 };
 
 int main(int argc, char* argv[]) {
-	int *a, pos, result;
+	int *a, result;
 	double ms;
 
 	a = new int[SIZE];
@@ -57,9 +57,6 @@ int main(int argc, char* argv[]) {
 	display_array("a", a);
 
 	srand(time(0));
-	pos = rand() % SIZE;
-	printf("Setting value 0 at %i\n", pos);
-	a[pos] = 0;
 
 	cout << "Starting..." << endl;
 	ms = 0;
