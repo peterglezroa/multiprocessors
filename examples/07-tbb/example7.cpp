@@ -21,7 +21,7 @@
 #include <tbb/blocked_range.h>
 #include "utils.h"
 
-const int MAXIMUM = 100000; //1e6
+const int MAXIMUM = 1000000; //1e6
 
 using namespace std;
 using namespace tbb;
