@@ -1,8 +1,9 @@
 // =================================================================
 //
 // File: example7.cpp
-// Authors: A01651517 Pedro González
-//				 A01703947 Juan Alcántara
+// Authors:
+//        A01651517 Pedro González
+//				A01703947 Juan Alcántara
 // Description: This file contains the code to brute-force all
 //				prime numbers less than MAXIMUM using Intel's TBB.
 //
@@ -50,8 +51,6 @@ class PrimeNumber {
 
 	void operator() (const blocked_range<int> &r) const {
 		for (int i = r.begin(); i != r.end(); i++) {
-			if (i == 2) {
-			}
 			is_prime(arr, i);
 		}
 	}

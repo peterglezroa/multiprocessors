@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
 	a = (int *) malloc(sizeof(int) * (MAXIMUM + 1));
 	printf("At first, neither is a prime. We will display to TOP_VALUE:\n");
-	for (i = 2; i < TOP_VALUE; i++) {
+	for (i = 2; i < MAXIMUM; i++) {
 		a[i] = -1;
 		if (a[i] == -1) {
 			printf("%i ", i);
@@ -53,19 +53,20 @@ int main(int argc, char* argv[]) {
 	printf("Starting...\n");
 	ms = 0;
 	for (i = 0; i < N; i++) {
+    #pragma omp parallel for shared(a)
 		for (int i = 0; i < MAXIMUM; i++)
 			a[i] = -1;
 		start_timer();
 
-    int j;
+    long j;
     #pragma omp parallel for shared(a)
-    for (j = 0; j < MAXIMUM; j++)
+    for (j = 2; j < MAXIMUM; j++)
       is_prime(a, j);
 
 		ms += stop_timer();
 	}
 	printf("Expanding the numbers that are prime to TOP_VALUE:\n");
-	for (i = 2; i < TOP_VALUE; i++) {
+	for (i = 2; i < MAXIMUM; i++) {
 		if (a[i] == 1) {
 			printf("%i ", i);
 		}

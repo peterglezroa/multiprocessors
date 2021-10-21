@@ -2,6 +2,8 @@
 //
 // File: example11.cpp
 // Author(s):
+//        A01651517 Pedro González
+//				A01703947 Juan Alcántara
 // Description: This file implements the code that transforms a
 //				grayscale image. Using OpenCV and OpenMP, to compile:
 //				g++ example11.cpp `pkg-config --cflags --libs opencv4` -fopenmp
@@ -27,14 +29,19 @@
 #include "utils.h"
 
 void gray_scale(cv::Mat src, cv::Mat dest) {
-    #pragma omp parallel
-    for (int i = 0 ; i < src.rows*src.cols ; i++) {
-        dest.at<uchar>(i%src.cols, i/src.cols) = (
-            (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[RED];
-            (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[GREEN];
-            (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[BLUE];
-        )/3;
-    }
+  int i;
+  #pragma omp parallel
+  for (i = 0 ; i < src.rows*src.cols ; i++) {
+    float calc = (
+        (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[RED]+
+        (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[GREEN]+
+        (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[BLUE]
+    )/3;
+
+    dest.at<cv::Vec3b>(i%src.cols, i/src.cols)[RED] = calc;
+    dest.at<cv::Vec3b>(i%src.cols, i/src.cols)[GREEN] = calc;
+    dest.at<cv::Vec3b>(i%src.cols, i/src.cols)[BLUE] = calc;
+  }
 }
 
 int main(int argc, char* argv[]) {
@@ -58,6 +65,7 @@ int main(int argc, char* argv[]) {
 		start_timer();
 
 		// call the implemented function
+    gray_scale(src, dest);
 
 		acum += stop_timer();
 	}
