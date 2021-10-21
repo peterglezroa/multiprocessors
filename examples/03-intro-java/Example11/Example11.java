@@ -77,6 +77,7 @@ public class Example11 {
 			stopTime = System.currentTimeMillis();
 
 			ms += (stopTime - startTime);
+            System.out.println(ms);
 		}
 		System.out.printf("avg time = %.5f\n", (ms / Utils.N));
 		final BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

@@ -68,8 +68,8 @@ int main (int argc, char* argv[]) {
 		for (int j = 0; j < MAXIMUM; j++)
 			a[j] = -1;
 
-		start_timer();
 		PrimeNumber identifier(a);
+		start_timer();
 		parallel_for(blocked_range<int>(2, MAXIMUM), identifier);
 
 		ms += stop_timer();

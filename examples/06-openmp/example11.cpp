@@ -28,19 +28,19 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include "utils.h"
 
-void gray_scale(cv::Mat src, cv::Mat dest) {
+void gray_scale(cv::Mat *src, cv::Mat *dest) {
   int i;
-  #pragma omp parallel
-  for (i = 0 ; i < src.rows*src.cols ; i++) {
+  #pragma omp parallel shared(src, dest, i)
+  for (i = 0 ; i < src->rows*src->cols ; i++) {
     float calc = (
-        (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[RED]+
-        (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[GREEN]+
-        (float) src.at<cv::Vec3b>(i%src.cols, i/src.cols)[BLUE]
+        (float) src->at<cv::Vec3b>(i)[RED]+
+        (float) src->at<cv::Vec3b>(i)[GREEN]+
+        (float) src->at<cv::Vec3b>(i)[BLUE]
     )/3;
 
-    dest.at<cv::Vec3b>(i%src.cols, i/src.cols)[RED] = calc;
-    dest.at<cv::Vec3b>(i%src.cols, i/src.cols)[GREEN] = calc;
-    dest.at<cv::Vec3b>(i%src.cols, i/src.cols)[BLUE] = calc;
+    dest->at<cv::Vec3b>(i)[RED] = calc;
+    dest->at<cv::Vec3b>(i)[GREEN] = calc;
+    dest->at<cv::Vec3b>(i)[BLUE] = calc;
   }
 }
 
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 		start_timer();
 
 		// call the implemented function
-    gray_scale(src, dest);
+    gray_scale(&src, &dest);
 
 		acum += stop_timer();
 	}

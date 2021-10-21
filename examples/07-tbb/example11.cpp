@@ -24,46 +24,66 @@
 #include "utils.h"
 
 using namespace std;
-using namespace cv;
 using namespace tbb;
+using namespace cv;
+
+class GrayoMcQueen {
+	private:
+    cv::Mat *src, *dest;
+
+	public:
+		GrayoMcQueen(cv::Mat *src, cv::Mat *dest) : src(src), dest(dest) {}
+
+    void operator() (const blocked_range<int> &r) const {
+      for (int i = r.begin(); i < r.end(); i++) {
+        float calc = (
+            (float) src->at<cv::Vec3b>(i)[RED]+
+            (float) src->at<cv::Vec3b>(i)[GREEN]+
+            (float) src->at<cv::Vec3b>(i)[BLUE]
+        )/3;
+
+        dest->at<cv::Vec3b>(i)[RED] = calc;
+        dest->at<cv::Vec3b>(i)[GREEN] = calc;
+        dest->at<cv::Vec3b>(i)[BLUE] = calc;
+      }
+    }
+};
 
 int main(int argc, char* argv[]) {
-	double ms;
+	int i;
+	double acum;
 
 	if (argc != 2) {
-		printf("usage: %s source_file\n", argv[0]);
+	printf("usage: %s source_file\n", argv[0]);
 		return -1;
 	}
 
-	Mat src = imread(argv[1], cv::IMREAD_COLOR);
-	Mat dest = Mat(src.rows, src.cols, CV_8UC3);
+	cv::Mat src = cv::imread(argv[1], cv::IMREAD_COLOR);
+	cv::Mat dest = cv::Mat(src.rows, src.cols, CV_8UC3);
 	if (!src.data) {
-		printf("Could not load image file: %s\n", argv[1]);
+    printf("Could not load image file: %s\n", argv[1]);
 		return -1;
 	}
 
-	cout << "Starting..." << endl;
-	ms = 0;
-	for (int  i = 0; i < N; i++) {
+	acum = 0;
+	for (i = 0; i < N; i++) {
+    GrayoMcQueen cuchao(&src, &dest);
 		start_timer();
 
-		// place your code here
+    parallel_for(blocked_range<int>(0, src.cols*src.rows), cuchao);
 
-		ms += stop_timer();
+		acum += stop_timer();
 	}
 
-	cout << "avg time = " << setprecision(15) << (ms / N) << " ms" << endl;
+	printf("avg time = %.5lf ms\n", (acum / N));
 
-	/*
 	cv::namedWindow("Original", cv::WINDOW_AUTOSIZE);
-	cv::imshow("Original", src);
+    cv::imshow("Original", src);
 
-	cv::namedWindow("Gray scale", cv::WINDOW_AUTOSIZE);
-	cv::imshow("Gray scale", dest);
+	cv::namedWindow("Gray", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Gray", dest);
 
 	cv::waitKey(0);
-	*/
-
 	cv::imwrite("gray_scale.png", dest);
 
 	return 0;
