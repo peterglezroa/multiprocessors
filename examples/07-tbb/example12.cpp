@@ -3,7 +3,8 @@
 // File: example12.cpp
 // Author: Pedro Perez
 // Description: This file implements the merge sort algorithm using
-//				Intel's TBB.
+//				Intel's TBB. To compile:
+//				g++ example12.cpp -ltbb
 //
 // Copyright (c) 2020 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial
@@ -79,7 +80,7 @@ private:
 		mid = low + ((high - low) / 2);
 		parallel_invoke (
 			[=] { split(low, mid); },
-			[=] { split(mid +1, high); }
+			[=] { split(mid + 1, high); }
 		);
 		merge(low, mid, high);
 		copyArray(low, high);

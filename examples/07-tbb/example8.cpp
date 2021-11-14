@@ -1,9 +1,10 @@
 // =================================================================
 //
-// File: example7.cpp
+// File: example8.cpp
 // Author: Pedro Perez
 // Description: This file contains the code that implements the
 //				enumeration sort algorithm using Intel's TBB.
+//				To compile: g++ example8.cpp -ltbb
 //
 // Copyright (c) 2020 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial

@@ -3,8 +3,12 @@
 // File: example10.cpp
 // Author: Pedro Perez
 // Description: This file implements the code that blurs a given
-//				image. Uses OpenCV and OpenMP, to compile:
-//				g++ example10.cpp `pkg-config --cflags --libs opencv4` -fopenmp
+//				image. Uses OpenCV, to compile:
+//				g++ example10.cpp `pkg-config --cflags --libs opencv4`
+//
+//				The time this implementation takes will be used as the
+//				basis to calculate the improvement obtained with
+//				parallel technologies.
 //
 // Copyright (c) 2020 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial
@@ -34,8 +38,8 @@ void blur_pixel(cv::Mat &src, cv::Mat &dest, int ren, int col) {
 	r = 0; g = 0; b = 0;
 	for (int i = -side_pixels; i <= side_pixels; i++) {
 		for (int j = -side_pixels; j <= side_pixels; j++) {
-			tmp_ren = MMIN( MMAX(ren + i, 0), src.rows - 1);
-			tmp_col = MMIN( MMAX(col + j, 0), src.cols - 1);
+			tmp_ren = MIN( MAX(ren + i, 0), src.rows - 1);
+			tmp_col = MIN( MAX(col + j, 0), src.cols - 1);
 
 			r += (float) src.at<cv::Vec3b>(tmp_ren, tmp_col)[RED];
 			g += (float) src.at<cv::Vec3b>(tmp_ren, tmp_col)[GREEN];
@@ -49,7 +53,6 @@ void blur_pixel(cv::Mat &src, cv::Mat &dest, int ren, int col) {
 }
 
 void blur(cv::Mat &src, cv::Mat &dest) {
-	#pragma omp parallel for shared(src, dest)
 	for(int i = 0; i < src.rows; i++) {
 		for(int j = 0; j < src.cols; j++) {
 			blur_pixel(src, dest, i, j);
@@ -73,11 +76,12 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	printf("Starting...\n");
 	acum = 0;
 	for (i = 0; i < N; i++) {
 		start_timer();
+
 		blur(src, dest);
+
 		acum += stop_timer();
 	}
 
@@ -85,13 +89,14 @@ int main(int argc, char* argv[]) {
 
 	/*
 	cv::namedWindow("Original", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Original", src);
+	cv::imshow("Original", src);
 
 	cv::namedWindow("Blur", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Blur", dest);
+	cv::imshow("Blur", dest);
 
 	cv::waitKey(0);
 	*/
+
 	cv::imwrite("blur.png", dest);
 
 	return 0;

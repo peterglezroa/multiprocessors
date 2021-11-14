@@ -5,7 +5,8 @@
 // Description: This file implements the quick sort algorithm. The
 //				time this implementation takes will be used as the
 //				basis to calculate the improvement obtained with
-//				parallel technologies.
+//				parallel technologies. To compile:
+//				g++ example13.cpp -ltbb
 //
 // Copyright (c) 2020 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial
@@ -20,7 +21,6 @@
 #include "utils.h"
 
 const int SIZE = 100000000; //1e8
-const int GRAIN = 1000; // 1e3
 
 using namespace std;
 using namespace tbb;

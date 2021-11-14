@@ -1,9 +1,10 @@
 // =================================================================
 //
-// File: Example2.cpp
+// File: example2.cpp
 // Author: Pedro Perez
 // Description: This file contains the code that searches for the
 // 				smallest value stored in an array using Intel's TBB.
+//				To compile: g++ example2.cpp -ltbb
 //
 // Copyright (c) 2020 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial
@@ -30,7 +31,6 @@ private:
 
 public:
 	MinValue(int *a) : array(a), result(INT_MAX) {}
-
 
 	MinValue(MinValue &x, split) : array(x.array), result(INT_MAX) {}
 

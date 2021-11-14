@@ -1,11 +1,16 @@
 // =================================================================
 //
+<<<<<<< HEAD
 // File: Example4.cpp
+=======
+// File: example4.cpp
+>>>>>>> 36de68c7e4ca1f4f269371a62af84718703fdbaa
 // Authors:
 //				 A01651517 Pedro González
 //				 A01703947 Juan Alcántara
 // Description: This file contains the code to count the number of
 //				even numbers within an array using Intel's TBB.
+//              To compile: g++ example4.cpp -ltbb
 //
 // Copyright (c) 2020 by Tecnologico de Monterrey.
 // All Rights Reserved. May be reproduced for any non-commercial

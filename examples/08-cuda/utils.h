@@ -21,13 +21,14 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-#define MIN(a,b) (((a)<(b))?(a):(b))
-#define MAX(a,b) (((a)>(b))?(a):(b))
+#define MMIN(a,b) (((a)<(b))?(a):(b))
+#define MMAX(a,b) (((a)>(b))?(a):(b))
 
 #define N 				10
 #define DISPLAY		100
 #define TOP_VALUE	10000
 
+typedef unsigned char uchar;
 typedef enum color {BLUE, GREEN, RED} Color;
 
 struct timeval startTime, stopTime;
