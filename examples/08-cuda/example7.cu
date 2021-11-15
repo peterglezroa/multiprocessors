@@ -21,9 +21,27 @@
 
 #define MAXIMUM 1000000 //1e6
 #define THREADS 256
-#define BLOCKS	MMIN(32, ((SIZE / THREADS) + 1))
+#define BLOCKS	MMIN(32, ((MAXIMUM / THREADS) + 1))
 
 __global__ void is_prime(int*a) {
+    int tid = threadIdx.x + (blockIdx.x * blockDim.x) + 2;
+    while (tid < MAXIMUM) {
+        if (a[tid] == -1) {
+            a[tid] = 1;
+            for (int i = 2; i < sqrt((double)tid); i++) {
+                if (tid % i == 0) {
+                    a[tid] = 0;
+                    break;
+                }
+            }
+            if (a[tid] == 1) {
+                for (int i = 2; tid * i < MAXIMUM; i++) {
+                    a[tid * i] = 0;
+                }
+            }
+        }
+        tid += blockDim.x * gridDim.x;
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -31,10 +49,13 @@ int main(int argc, char* argv[]) {
     double ms;
 
     // Memory in cpu
-    a = (int *)malloc(sizeof(int) * (MAXIMUM+1));
+    a = (int *)malloc(sizeof(int) * MAXIMUM);
+    for (int j = 0; j < MAXIMUM; j++)
+        a[j] = -1;
 
     // Memory in gpu
-    cudaMalloc((void**) &a_gpu, sizeof(int)*MAXIMUM+1);
+    cudaMalloc((void**) &a_gpu, sizeof(int)*MAXIMUM);
+    cudaMemcpy(a_gpu, a, sizeof(int)*MAXIMUM, cudaMemcpyHostToDevice);
 
     printf("Starting...\n");
     ms = 0;
@@ -48,10 +69,10 @@ int main(int argc, char* argv[]) {
     }
 
     // Copy back
-    cudaMemcpy(a, a_gpu, sizeof(int)*SIZE, cudaMemcpyDeviceToHost);
+    cudaMemcpy(a, a_gpu, sizeof(int)*MAXIMUM, cudaMemcpyDeviceToHost);
 
     printf("Expanding the numbers that are prime to TOP_VALUE:\n");
-    for (i = 2; i < TOP_VALUE; i++)
+    for (i = 2; i < 30; i++)
         if (a[i]) printf("%i ", i);
 	printf("\n");
 	printf("avg time = %.5lf ms\n", (ms / N));
