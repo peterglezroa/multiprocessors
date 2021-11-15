@@ -68,8 +68,8 @@ int main(int argc, char* argv[]) {
 	for (i = 0; i < N; i++) {
 		start_timer();
 
-    for (int j = 0; j < MAXIMUM; j++)
-      is_prime(a, j);
+        for (int j = 0; j < MAXIMUM; j++)
+          is_prime(a, j);
 
 		ms += stop_timer();
 	}
