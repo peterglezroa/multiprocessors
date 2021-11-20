@@ -19,7 +19,7 @@ const int fSize, const int stride, uchar *dst, const int dCols, const int size) 
     if (tid < size) {
         byte = 0;
         for (int i = 0; i < fSize; i++)
-            byte += src[spos+i]*filter[i]/fSize;
+            byte += src[spos+i]*filter[i];
         dst[tid] = byte;
     }
 }
