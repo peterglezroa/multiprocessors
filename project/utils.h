@@ -1,8 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <time.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
 
@@ -42,20 +43,87 @@ double stop_timer() {
 }
 
 // =================================================================
-// Scans the filter from stdin.
-//
-// @returns pointer to filter information
+// Class that contains all the relevant data and the method to extract
+// said data for the implementations of Convolution.
 // =================================================================
-float * scanFilter(int fRows, int fCols) {
-    float *filter;
+class ConvContext {
+    private:
+        cv::Mat src, dst;
+        int fRows, fCols;
+        float *filter;
+        bool debug;
 
-    // Make space in memory
-    filter = (float *)malloc(sizeof(float)*fRows*fCols);
+        /* Function to print if debugging */
+        void debugPrintf(const char str[]) {
+            if (debug) fprintf(stdout, "%s\n", str);
+        }
 
-    // Scan filter
-    fprintf(stdout, "Give me the filter: \n");
-    for (int i = 0; i < fRows*fCols; i++) fscanf(stdin, "%f", &filter[i]);
+        /* Scan filter using scanf */
+        float * scanFilter(int fRows, int fCols) {
+            float *filter;
 
-    return filter;
-}
+            // Make space in memory
+            filter = (float *)malloc(sizeof(float)*fRows*fCols);
+
+            // Scan filter
+            fprintf(stdout, "Give me the filter: \n");
+            for (int i = 0; i < fRows*fCols; i++) fscanf(stdin, "%f", &filter[i]);
+
+            return filter;
+        }
+
+    public:
+        ConvContext(std::string imagePath, bool color, bool debug = false)
+        : debug(debug) {
+            // Read image
+            debugPrintf("Reading image....");
+            src = (color)?
+                cv::imread(imagePath, cv::IMREAD_COLOR):
+                cv::imread(imagePath, cv::IMREAD_GRAYSCALE);
+
+            // Scan filter
+            debugPrintf("Give me filter dimensions (rows cols): ");
+            fscanf(stdin, "%i %i", &fRows, &fCols);
+            filter = scanFilter(fRows, fCols);
+            if (fCols <= 0 || fRows <= 0)
+                throw std::runtime_error("Invalid filter dimensions!");
+        }
+
+        ~ConvContext() { free(filter); }
+
+        void setDestination(uchar *dstRaw) {
+            dst = cv::Mat(
+                src.rows,
+                src.cols,
+                src.type(),
+                dstRaw,
+                cv::Mat::AUTO_STEP
+            );
+            free(dstRaw);
+        }
+
+        /* Function to display the original image and the destination image */
+        void display() {
+            cv::namedWindow("Original", cv::WINDOW_AUTOSIZE);
+            cv::imshow("Original", src);
+
+            cv::namedWindow("Convolved", cv::WINDOW_AUTOSIZE);
+            cv::imshow("Convolved", dst);
+
+            cv::waitKey(0);
+        }
+
+        // Getters
+        const cv::Mat *getSrc() const { return &src; }
+        const cv::Mat *getDst() const { return &dst; }
+        int getFRows() { return fRows; }
+        int getFCols() { return fCols; }
+        int getFSize() { return fRows*fCols; }
+        float *getFilter() const { return filter; }
+        int getRows() { return src.rows; }
+        int getCols() { return src.cols;}
+        int getChannels() { return src.channels(); }
+        int getSize() { return src.rows*src.cols; }
+};
+
 #endif
