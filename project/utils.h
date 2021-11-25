@@ -54,8 +54,8 @@ class ConvContext {
         bool debug;
 
         /* Function to print if debugging */
-        void debugPrintf(const char str[]) {
-            if (debug) fprintf(stdout, "%s\n", str);
+        void log(const char str[]) {
+            if (log != NULL) fprintf(log, "%s\n", str);
         }
 
         /* Scan filter using scanf */
@@ -66,14 +66,14 @@ class ConvContext {
             filter = (float *)malloc(sizeof(float)*fRows*fCols);
 
             // Scan filter
-            fprintf(stdout, "Give me the filter: \n");
+            if (log != NULL) printf(log, "Give me the filter: \n");
             for (int i = 0; i < fRows*fCols; i++) fscanf(stdin, "%f", &filter[i]);
 
             return filter;
         }
 
     public:
-        ConvContext(std::string imagePath, bool color, bool debug = false)
+        ConvContext(std::string imagePath, bool color, FILE *log = NULL)
         : debug(debug) {
             // Read image
             debugPrintf("Reading image....");
@@ -121,9 +121,10 @@ class ConvContext {
         int getFSize() { return fRows*fCols; }
         float *getFilter() const { return filter; }
         int getRows() { return src.rows; }
-        int getCols() { return src.cols;}
+        int getCols() { return src.cols; }
         int getChannels() { return src.channels(); }
-        int getSize() { return src.rows*src.cols; }
+        int imgSize() { return src.cols*src.rows; }
+        int getSize() { return src.rows*src.cols*src.channels; }
 };
 
 #endif

@@ -10,8 +10,19 @@
 
 uchar * convolution(ConvContext *context) {
     // Make space for destination
-    uchar *dst;
+    uchar *dst, val;
     dst = (uchar *)malloc(sizeof(uchar) * context->getSize());
+
+    for (int i = 0; i < context->getSize(); i++) {
+        uchar val = 0;
+        for (int r = 0; r < context->getFRows(); r++) {
+            for (int c = 0; c < context->getFCols(); c++) {
+                if (context->getRows()
+            }
+        }
+    }
+
+    context->setDestination(dst);
     return dst;
 }
 
