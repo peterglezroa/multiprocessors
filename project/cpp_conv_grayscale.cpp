@@ -33,14 +33,17 @@ int main(int argc, char *argv[]) {
     ConvContext *context;
     double ms;
     uchar *dst;
+    bool grayscale = true;
 
-    if (argc != 2) {
+    if (argc != 2 && argc != 3) {
         fprintf(stderr, "usage: %s <image file>\n", argv[0]);
         return -1;
     }
 
+    if (argc == 3) grayscale = false;
+
     // Get context
-    context = new ConvContext(argv[1], true);
+    context = new ConvContext(argv[1], grayscale);
     context->printSize(stdout);
 
     // Run algorithm n times
@@ -56,7 +59,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "Calculation time: %.5f ms\n", ms);
 
     context->setDestination(dst);
-    context->display();
+//    context->display();
 
     delete context;
     free(dst);
