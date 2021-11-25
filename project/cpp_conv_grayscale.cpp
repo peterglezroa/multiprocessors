@@ -9,26 +9,30 @@
 #include "utils.h"
 
 uchar * convolution(ConvContext *context) {
+    uchar *dst, byte, *dta = context->getData();
+    float *k = context->getKernel();
+    int spos, pos, channels = context->getChannels();
+
     // Make space for destination
-    uchar *dst, val;
     dst = (uchar *)malloc(sizeof(uchar) * context->getSize());
 
     for (int i = 0; i < context->getSize(); i++) {
-        uchar val = 0;
-        for (int r = 0; r < context->getFRows(); r++) {
-            for (int c = 0; c < context->getFCols(); c++) {
-                if (context->getRows()
-            }
+        byte = 0;
+        spos = i - (int)(context->getKSize()/2)*channels;
+        for (int f = 0; f < context->getKSize(); f++) {
+            int pos = spos+f*channels;
+            if (pos > 0 && pos < context->getSize()) byte += dta[pos]*k[f];
         }
+        dst[i] = byte;
     }
 
-    context->setDestination(dst);
     return dst;
 }
 
 int main(int argc, char *argv[]) {
     ConvContext *context;
-    int ms;
+    double ms;
+    uchar *dst;
 
     if (argc != 2) {
         fprintf(stderr, "usage: %s <image file>\n", argv[0]);
@@ -36,22 +40,25 @@ int main(int argc, char *argv[]) {
     }
 
     // Get context
-    context = new ConvContext(argv[1], false, true);
+    context = new ConvContext(argv[1], true);
+    context->printSize(stdout);
 
     // Run algorithm n times
     for (int i = 0; i < ITERATIONS; i++) {
         start_timer();
 
         // Only save on last iteration
-        if (i == ITERATIONS-1) context->setDestination(convolution(context));
+        if (i == ITERATIONS-1) dst = convolution(context);
         else convolution(context);
 
         ms += stop_timer()/ITERATIONS;
     }
+    fprintf(stdout, "Calculation time: %.5f ms\n", ms);
 
-//    context.show();
+    context->setDestination(dst);
+    context->display();
 
     delete context;
-    free(context);
+    free(dst);
     return 0;
 }

@@ -17,9 +17,8 @@ const int kSize, const int stride, uchar *dst, const int size) {
     if (tid < size) {
         int spos = tid - (int)(kSize/2)*channels;
         uchar byte = 0;
-        for (int i = 0; i < kSize; i++) {
+        for (int i = 0; i < kSize; i++)
             byte += src[spos+i*channels]*kernel[i];
-        }
         dst[tid] = byte;
     }
 }
