@@ -47,12 +47,11 @@ int main(int argc, char *argv[]) {
     double ms;
     bool grayscale = true;
 
-    if (argc != 2 && argc != 3) {
-        fprintf(stderr, "usage: %s <image file>\n", argv[0]);
+    if (argc == 3 && strcmp(argv[2], "--grey") == 0) grayscale = true;
+    else if (argc != 2) {
+        fprintf(stderr, "usage: %s source_file\n", argv[0]);
         return -1;
     }
-
-    if (argc == 3) grayscale = false;
 
     // Get context
     context = new ConvContext(argv[1], grayscale);

@@ -60,7 +60,8 @@ class ConvContext {
             kernel = (float *)malloc(sizeof(float)*kRows*kCols);
 
             // Scan kernel 
-            for (int i = 0; i < kRows*kCols; i++) fscanf(stdin, "%f", &kernel[i]);
+            for (int i = 0; i < kRows*kCols; i++)
+                fscanf(stdin, "%f", &kernel[i]);
 
             return kernel;
         }

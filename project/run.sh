@@ -2,35 +2,35 @@
 if test $# -ne 1; then
     echo "Must give me the binary for running the tests"
 else
-    echo "Running flower grayscale:\n"
-    $1 ../images/flower.png --grayscale < ./filters/blur_filter.txt
-    $1 ../images/flower.png --grayscale < ./filters/blur_filter5.txt
+    echo "Running flower gray:"
+    $1 ../images/flower.png --gray < ./filters/blur_filter.txt
+    $1 ../images/flower.png --gray < ./filters/blur_filter5.txt
 
-    echo "Running flower:\n"
+    echo "Running flower:"
     $1 ../images/flower.png < ./filters/blur_filter.txt
     $1 ../images/flower.png < ./filters/blur_filter5.txt
 
-    echo "Running Vangogh grayscale:\n"
-    $1 ../images/Vancock.jpeg --grayscale < ./filters/blur_filter.txt
-    $1 ../images/Vancock.jpeg --grayscale < ./filters/blur_filter5.txt
+    echo "Running Vangogh gray:"
+    $1 ../images/Vancock.jpeg --gray < ./filters/blur_filter.txt
+    $1 ../images/Vancock.jpeg --gray < ./filters/blur_filter5.txt
 
-    echo "Running Vangogh:\n"
+    echo "Running Vangogh:"
     $1 ../images/Vancock.jpeg < ./filters/blur_filter.txt
     $1 ../images/Vancock.jpeg < ./filters/blur_filter5.txt
 
-    echo "Running Appa grayscale:\n"
-    $1 ../images/appa.jpg --grayscale < ./filters/blur_filter.txt
-    $1 ../images/appa.jpg --grayscale < ./filters/blur_filter5.txt
+    echo "Running Appa gray:"
+    $1 ../images/appa.jpg --gray < ./filters/blur_filter.txt
+    $1 ../images/appa.jpg --gray < ./filters/blur_filter5.txt
 
-    echo "Running Appa:\n"
+    echo "Running Appa:"
     $1 ../images/appa.jpg < ./filters/blur_filter.txt
     $1 ../images/appa.jpg < ./filters/blur_filter5.txt
 
-    echo "Running Dino grayscale:\n"
-    $1 ../images/dino.png --grayscale < ./filters/blur_filter.txt
-    $1 ../images/dino.png --grayscale < ./filters/blur_filter5.txt
+    echo "Running Dino gray:"
+    $1 ../images/dino.png --gray < ./filters/blur_filter.txt
+    $1 ../images/dino.png --gray < ./filters/blur_filter5.txt
 
-    echo "Running Appa:\n"
+    echo "Running Appa:"
     $1 ../images/dino.png < ./filters/blur_filter.txt
     $1 ../images/dino.png < ./filters/blur_filter5.txt
 fi
