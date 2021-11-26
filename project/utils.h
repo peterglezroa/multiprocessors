@@ -73,16 +73,23 @@ class ConvContext {
 
     public:
         ConvContext(std::string imagePath, bool color) {
-            // Read image
-            src = (color)?
-                cv::imread(imagePath, cv::IMREAD_COLOR):
-                cv::imread(imagePath, cv::IMREAD_GRAYSCALE);
-
             // Scan kernel 
             fscanf(stdin, "%i %i", &kRows, &kCols);
             if (kCols <= 0 || kRows <= 0)
                 throw std::runtime_error("Invalid kernel dimensions!");
             kernel = scanKernel();
+
+            // Read image
+            src = (color)?
+                cv::imread(imagePath, cv::IMREAD_COLOR):
+                cv::imread(imagePath, cv::IMREAD_GRAYSCALE);
+
+            // Add border for overflow
+            // https://stackoverflow.com/questions/34223101/opencv-set-image-borders-without-padding/34224078
+            cv::Rect border(cv::Point(0, 0), src.size());
+            cv::Scalar c(0, 0, 0);
+            int thickness = kCols*kRows/2;
+            cv::rectangle(src, border, c, thickness);
         }
 
         ~ConvContext() { free(kernel); }

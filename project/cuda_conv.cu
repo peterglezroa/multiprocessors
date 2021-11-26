@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     cudaMemcpy(dstRaw, gpu_dst, sizeof(uchar)*context->getSize(),
         cudaMemcpyDeviceToHost);
     context->setDestination(dstRaw);
-//    context->display();
+    context->display();
 
     cudaFree(gpu_src); cudaFree(gpu_dst); cudaFree(gpu_kernel);
     free(dstRaw);
