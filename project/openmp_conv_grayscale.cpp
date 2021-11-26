@@ -16,6 +16,7 @@ uchar * convolution(ConvContext *context) {
     // Make space for destination
     dst = (uchar *)malloc(sizeof(uchar) * context->getSize());
 
+    #pragma omp parallel for
     for (int i = 0; i < context->getSize(); i++) {
         byte = 0;
         spos = i - (int)(context->getKSize()/2)*channels;
@@ -59,7 +60,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "Calculation time: %.5f ms\n", ms);
 
     context->setDestination(dst);
-    context->display();
+//    context->display();
 
     delete context;
     free(dst);

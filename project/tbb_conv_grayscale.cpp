@@ -6,27 +6,37 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include <tbb/parallel_invoke.h>
+
 #include "utils.h"
 
-uchar * convolution(ConvContext *context) {
-    uchar *dst, byte, *dta = context->getData();
-    float *k = context->getKernel();
-    int spos, pos, channels = context->getChannels();
+class ConvolutionTBB {
+private:
+    ConvContext context;
+    uchar *dst;
 
-    // Make space for destination
-    dst = (uchar *)malloc(sizeof(uchar) * context->getSize());
-
-    for (int i = 0; i < context->getSize(); i++) {
-        byte = 0;
-        spos = i - (int)(context->getKSize()/2)*channels;
-        for (int f = 0; f < context->getKSize(); f++) {
-            int pos = spos+f*channels;
-            if (pos > 0 && pos < context->getSize()) byte += dta[pos]*k[f];
-        }
-        dst[i] = byte;
+public:
+    ConvolutionTBB(ConvContext *context_) : context(context_) {
+        dst = (uchar *)malloc(sizeof(uchar) * context.getSize());
     }
 
-    return dst;
+    void operator() (const blocked_range<int> &r) const {
+        uchar *dst, byte, *dta = context.getData();
+        float *k = context.getKernel();
+        int spos, pos, channels = context.getChannels();
+
+        for (int i = 0; i < context.getSize(); i++) {
+            byte = 0;
+            spos = i - (int)(context.getKSize()/2)*channels;
+            for (int f = 0; f < context.getKSize(); f++) {
+                int pos = spos+f*channels;
+                if (pos > 0 && pos < context.getSize()) byte += dta[pos]*k[f];
+            }
+            dst[i] = byte;
+        }
+    }
+
+    uchar * getRes() { return dst; }
 }
 
 int main(int argc, char *argv[]) {
