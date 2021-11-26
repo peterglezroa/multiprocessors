@@ -12,7 +12,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-#define ITERATIONS 10
+#define ITERATIONS 100
 
 struct timeval startTime, stopTime;
 int started = 0;
