@@ -1,3 +1,8 @@
+/*----------------------------------------------------------------
+* Programación avanzada: Proyecto final
+* Fecha: 25-Nov-2021
+* Autor: A01651517 Pedro González
+*--------------------------------------------------------------*/
 #ifndef UTILS_H
 #define UTILS_H
 

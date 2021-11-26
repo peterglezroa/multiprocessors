@@ -1,3 +1,8 @@
+/*----------------------------------------------------------------
+* Programación avanzada: Proyecto final
+* Fecha: 25-Nov-2021
+* Autor: A01651517 Pedro González
+*--------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <opencv2/core/core.hpp>

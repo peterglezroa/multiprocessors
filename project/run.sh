@@ -1,4 +1,9 @@
 #!/bin/bash
+#*----------------------------------------------------------------
+# Programación avanzada: Proyecto final
+# Fecha: 25-Nov-2021
+# Autor: A01651517 Pedro González
+#--------------------------------------------------------------*/
 if test $# -ne 1; then
     echo "Must give me the binary for running the tests"
 else
