@@ -6,43 +6,45 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include <tbb/parallel_invoke.h>
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
 
 #include "utils.h"
 
+using namespace tbb;
+
 class ConvolutionTBB {
 private:
-    ConvContext context;
+    ConvContext *context;
     uchar *dst;
 
 public:
     ConvolutionTBB(ConvContext *context_) : context(context_) {
-        dst = (uchar *)malloc(sizeof(uchar) * context.getSize());
+        dst = (uchar *)malloc(sizeof(uchar) * context->getSize());
     }
 
     void operator() (const blocked_range<int> &r) const {
-        uchar *dst, byte, *dta = context.getData();
-        float *k = context.getKernel();
-        int spos, pos, channels = context.getChannels();
+        uchar byte;
+        int spos, pos;
 
-        for (int i = 0; i < context.getSize(); i++) {
+        for (int i = r.begin(); i != r.end(); i++) {
             byte = 0;
-            spos = i - (int)(context.getKSize()/2)*channels;
-            for (int f = 0; f < context.getKSize(); f++) {
-                int pos = spos+f*channels;
-                if (pos > 0 && pos < context.getSize()) byte += dta[pos]*k[f];
+            spos = i - (int)(context->getKSize()/2)*context->getChannels();
+            for (int f = 0; f < context->getKSize(); f++) {
+                int pos = spos+f*context->getChannels();
+                if (pos > 0 && pos < context->getSize())
+                    byte += context->getData()[pos]*context->getKernel()[f];
             }
             dst[i] = byte;
         }
     }
 
     uchar * getRes() { return dst; }
-}
+};
 
 int main(int argc, char *argv[]) {
     ConvContext *context;
     double ms;
-    uchar *dst;
     bool grayscale = true;
 
     if (argc != 2 && argc != 3) {
@@ -60,18 +62,19 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < ITERATIONS; i++) {
         start_timer();
 
+		ConvolutionTBB obj(context);
+		parallel_for(blocked_range<int>(0, context->getSize()),  obj);
+
         // Only save on last iteration
-        if (i == ITERATIONS-1) dst = convolution(context);
-        else convolution(context);
+        if (i == ITERATIONS-1) context->setDestination(obj.getRes());
 
         ms += stop_timer()/ITERATIONS;
+        fprintf(stdout, "%.5f ms\n", ms);
     }
     fprintf(stdout, "Calculation time: %.5f ms\n", ms);
 
-    context->setDestination(dst);
-    context->display();
+//    context->display();
 
     delete context;
-    free(dst);
     return 0;
 }
